@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlantGuard AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #23452b;
+            min-height: 100vh;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 30px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        h1 {
+            color: #237a36;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #66776a;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .upload-box {
+            border: 2px dashed #62a66b;
+            border-radius: 14px;
+            padding: 30px 15px;
+            background: #f6fff6;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            margin: 18px 0;
+            max-width: 100%;
+        }
+
+        button {
+            background: #27833b;
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #195f2a;
+        }
+
+        .result {
+            margin-top: 28px;
+            padding: 22px;
+            background: #eff9ef;
+            border-radius: 12px;
+        }
+
+        .result h2 {
+            color: #237a36;
+            margin-bottom: 12px;
+        }
+
+        .result img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .error {
+            margin-top: 20px;
+            color: #b3261e;
+            font-weight: bold;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #66776a;
+            margin-top: 25px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+     <h1>🌱 PlantGuard AI</h1>
+
+        <p class="subtitle">
+            Upload a tomato leaf image and let our
+            Machine Learning model predict its category.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="upload-box">
+                <h3>📷 Upload Your Leaf Image</h3>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+                <br>
+
+                <button type="submit">
+                    Detect Plant Disease
+                </button>
+            </div>
+
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if prediction %}
+            <div class="result">
+
+                <h2>Detection Result</h2>
+
+                {% if image_file %}
+                    <img src="{{ url_for('static', filename=image_file) }}"
+                         alt="Uploaded tomato leaf">
+                {% endif %}
+
+                <h3>Predicted Category: {{ prediction }}</h3>
+
+                <p>
+                    Model confidence: {{ "%.2f"|format(confidence) }}%
+                </p>
+
+            </div>
+        {% endif %}
+
+        <p class="note">
+            Educational project only. Predictions are estimates
+            for three tomato leaf categories and are not a
+            substitute for expert agricultural advice.
+        </p>
+
+    </div>
+
+</body>
+</html>
